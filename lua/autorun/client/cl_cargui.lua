@@ -106,7 +106,7 @@ function PANEL:OnPrevious()
 end
 
 function PANEL:Init()
-	self:SetSize(SWH(ScrW()*0.58,200))
+	self:SetSize(SWH(1113.6,200))
 	self:SetPos(SWH(0,ScrH()-205))
 	self:SetVisible(true)
 	self:MakePopup()
