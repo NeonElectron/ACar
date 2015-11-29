@@ -137,7 +137,7 @@ function PANEL:Init()
 	self.SellButton:SetSize(SWH(150, 44))
 	function self.SellButton.DoClick()
 		self:OnSell()
-
+	end
 	function self.SellButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 255, 0, 150))
 		surface.DrawRect(1, 1, w - 2, h - 2)
