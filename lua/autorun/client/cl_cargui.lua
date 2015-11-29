@@ -77,6 +77,9 @@ hook.Add( "ShouldDrawLocalPlayer", "MyShouldDrawLocalPlayer",
 
 local PANEL = {}
 
+function PANEL:OnCancel()
+end
+
 function PANEL:OnBuy()
 end
 
@@ -110,6 +113,16 @@ function PANEL:Init()
 	self:SetPos(SWH(0,ScrH()-205))
 	self:SetVisible(true)
 	self:MakePopup()
+
+	self.CancelButton = vgui.Create("DButton", self)
+	self.CancelButton:SetText("Cancel")
+	self.CancelButton:SetFont("VMedFont")
+	self.CancelButton:SetColor(Color(100, 255, 100, 200))
+	self.CancelButton:SetPos(SWH(105, 139))
+	self.CancelButton:SetSize(SWH(170, 44))
+	function self.CancelButton.DoClick()
+		self:OnCancel()
+	end
 
 	self.BuyButton = vgui.Create("DButton", self)
 	self.BuyButton:SetText("Buy")
@@ -282,3 +295,13 @@ function PANEL:Paint(w, h)
 	surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("ACar_Shop", PANEL)
+
+concommand.Add("showcarmenu",
+	function ()
+		local CarShop = LocalPlayer():GetCarShop()
+		if CarShop then
+			CarShop:Remove()
+		end
+		LocalPlayer():SetCarShop(vgui.Create("ACar_Shop"))
+	end
+)
