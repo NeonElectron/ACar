@@ -25,12 +25,6 @@ function ENT:OnTakeDamage()
 
 end
 
-function ENT:AcceptInput( Name, Activator, Caller )
-	if Name == "Use" and Caller:IsPlayer() then
-
-	end
-end
-
 function ENT:Use( activator,caller, useType, value )
 	if caller:IsPlayer() then
 		net.Start("ACAR_Begin")
@@ -42,9 +36,3 @@ function ENT:Use( activator,caller, useType, value )
 		net.Send(caller)
 	end
 end
-
-
-
-
-
-

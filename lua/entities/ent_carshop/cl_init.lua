@@ -1,5 +1,4 @@
 include("shared.lua")
-AddCSLuaFile("shared.lua")
 
 function ENT:Initialize()
 	self.CarModel = ClientsideModel("models/tdmcars/mclaren_f1.mdl",RENDERGROUP_BOTH)

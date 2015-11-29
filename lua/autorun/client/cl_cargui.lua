@@ -5,15 +5,16 @@ function PlyMeta:IsInCarShop()
 end
 
 function PlyMeta:SetInCarShop(bool)
-	 self.IICS = bool
+	self.IICS = bool
 end
+
 function PlyMeta:SetCarShop(ent)
 	self.CarShop = ent
 end
+
 function PlyMeta:GetCarShop()
 	return self.CarShop
 end
-
 
 local myscrw, myscrh = 1920,	1080
 local function SW(width)
@@ -31,7 +32,6 @@ local function SWH(width, height)
 	local screenheight = myscrh
 	return width*ScrW()/screenwidth, height*ScrH()/screenheight
 end
-
 
 function ACar_OpenShop()
 	LocalPlayer():SetInCarShop(net.ReadBool())
@@ -77,33 +77,33 @@ hook.Add( "ShouldDrawLocalPlayer", "MyShouldDrawLocalPlayer",
 
 local PANEL = {}
 
-local function OnBuy()
+function PANEL:OnBuy()
 end
 
-local function OnSell()
+function PANEL:OnSell()
 end
 
-local function OnSpawn()
+function PANEL:OnSpawn()
 end
 
-local function OnStore()
+function PANEL:OnStore()
 end
 
-local function OnNext()
+function PANEL:OnNext()
 	net.Start("ACar_SendCommand")
 	net.WriteString("OnNext")
 	net.SendToServer()
 	print("2")
 end
 
-local function OnPrevious()
+surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
+surface.CreateFont("VBigFont", {font = "Robot", size = 48})
+
+function PANEL:OnPrevious()
 	net.Start("ACar_SendCommand")
 	net.WriteString("OnPrevious")
 	net.SendToServer()
 end
-
-surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
-surface.CreateFont("VBigFont", {font = "Robot", size = 48})
 
 function PANEL:Init()
 	self:SetSize(SWH(ScrW()*0.58,200))
@@ -117,7 +117,9 @@ function PANEL:Init()
 	self.BuyButton:SetColor(Color(255, 255, 255, 200))
 	self.BuyButton:SetPos(SWH(35,25))
 	self.BuyButton:SetSize(SWH(150, 44))
-	self.BuyButton.DoClick = function() OnBuy() end
+	function self.BuyButton.DoClick()
+		self:OnBuy()
+	end
 
 	function self.BuyButton:Paint(w, h)
 		surface.SetDrawColor(Color(255, 0, 0, 150))
@@ -133,7 +135,8 @@ function PANEL:Init()
 	self.SellButton:SetColor(Color(255, 255, 255, 200))
 	self.SellButton:SetPos(SWH(35, 75))
 	self.SellButton:SetSize(SWH(150, 44))
-	self.SellButton.DoClick = function() OnSell() end
+	function self.SellButton.DoClick()
+		self:OnSell()
 
 	function self.SellButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 255, 0, 150))
@@ -149,7 +152,9 @@ function PANEL:Init()
 	self.SpawnButton:SetColor(Color(255, 255, 255, 200))
 	self.SpawnButton:SetPos(SWH(205, 25))
 	self.SpawnButton:SetSize(SWH(200, 44))
-	self.SpawnButton.DoClick = function() OnSpawn() end
+	function self.SpawnButton.DoClick()
+		self:OnSpawn()
+	end
 
 	function self.SpawnButton:Paint(w, h)
 		surface.SetDrawColor(Color(220, 20, 60, 200))
@@ -165,7 +170,9 @@ function PANEL:Init()
 	self.StoreButton:SetColor(Color(255, 255, 255, 200))
 	self.StoreButton:SetPos(SWH(205, 75))
 	self.StoreButton:SetSize(SWH(200, 44))
-	self.StoreButton.DoClick = function() OnStore() end
+	function self.StoreButton.DoClick()
+		self:OnStore()
+	end
 
 	function self.StoreButton:Paint(w, h)
 		surface.SetDrawColor(Color(100, 100, 170, 150))
@@ -182,7 +189,9 @@ function PANEL:Init()
 	self.PrevButton:SetColor(Color(255, 255, 255, 200))
 	self.PrevButton:SetPos(SWH(425, 50))
 	self.PrevButton:SetSize(SWH(60, 40))
-	self.PrevButton.DoClick = function() OnPrevious() end
+	function self.PrevButton.DoClic()
+		self:OnPrevious()
+	end
 
 	function self.PrevButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 0, 255, 150))
@@ -199,7 +208,9 @@ function PANEL:Init()
 	self.NextButton:SetColor(Color(255, 255, 255, 200))
 	self.NextButton:SetPos(SWH(495, 50))
 	self.NextButton:SetSize(SWH(60, 40))
-	self.NextButton.DoClick = function() print("boy") OnNext() end
+	function self.NextButton.DoClick()
+		self:OnNext()
+	end
 
 	function self.NextButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 0, 255, 150))
@@ -248,7 +259,7 @@ function PANEL:Init()
 	self.ColorBlue:SetSize(SWH(350, 20))
 
 	local function GetPreviewColors()
-		return self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150
+		return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
 	end
 
 	self.ColorPreviewPanel = vgui.Create("DPanel", self)
@@ -256,7 +267,7 @@ function PANEL:Init()
 	self.ColorPreviewPanel:SetSize(SWH(200, 100))
 
 	function self.ColorPreviewPanel:Paint(w, h)
-		surface.SetDrawColor(Color(GetPreviewColors()))
+		surface.SetDrawColor(GetPreviewColors())
 		surface.DrawRect(1, 1, w - 2, h - 2)
 
 		surface.SetDrawColor(Color(0, 0, 0, 150))
@@ -271,12 +282,3 @@ function PANEL:Paint(w, h)
 	surface.DrawRect(0, 0, w, h)
 end
 vgui.Register("ACar_Shop", PANEL)
-
-concommand.Add("vehicleactions",
-	function ()
-		if BasePanel then
-			BasePanel:Remove()
-		end
-		BasePanel = vgui.Create("ACar_Shop")
-	end
-)
