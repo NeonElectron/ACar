@@ -47,7 +47,6 @@ function ACar_ClientCommand(ln,ply)
 	end
 
 	local Command = net.ReadString()
-	print(Command)
 	if Command == "OnNext" then
 		ply:SetCarID(ply:GetCarID() + 1)
 

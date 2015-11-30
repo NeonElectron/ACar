@@ -119,7 +119,7 @@ end
 function PANEL:UpdateColors()
 	local Shop = LocalPlayer():GetCarShop()
 	if Shop then
-		Shop.CarModel:SetColor(self.GetPreviewColors())
+		Shop.CarModel:SetColor(self:GetPreviewColors())
 	end
 end
 
@@ -280,41 +280,37 @@ function PANEL:Init()
 	self.BlueLabel:SetText("Blue")
 	self.BlueLabel:SetPos(SWH(10, 65))
 
-<<<<<<< HEAD
+	local function UpdateColors()
+		self:UpdateColors()
+	end
 
-=======
->>>>>>> origin/master
 	self.ColorRed = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorRed:SetMin(0)
 	self.ColorRed:SetMax(255)
 	self.ColorRed:SetPos(SWH(-90, 5))
 	self.ColorRed:SetSize(SWH(350, 20))
-	self.ColorRed.ValueChanged = self.UpdateColors
+	self.ColorRed.ValueChanged = UpdateColors
 
 	self.ColorGreen = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorGreen:SetMin(0)
 	self.ColorGreen:SetMax(255)
 	self.ColorGreen:SetPos(SWH(-90, 35))
 	self.ColorGreen:SetSize(SWH(350, 20))
-	self.ColorGreen.ValueChanged = self.UpdateColors
+	self.ColorGreen.ValueChanged = UpdateColors
 
 	self.ColorBlue = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorBlue:SetMin(0)
 	self.ColorBlue:SetMax(255)
 	self.ColorBlue:SetPos(SWH(-90, 65))
 	self.ColorBlue:SetSize(SWH(350, 20))
-	self.ColorBlue.ValueChanged = self.UpdateColors
+	self.ColorBlue.ValueChanged = UpdateColors
 
 	self.ColorPreviewPanel = vgui.Create("DPanel", self)
 	self.ColorPreviewPanel:SetPos(SWH(865, 30))
 	self.ColorPreviewPanel:SetSize(SWH(200, 100))
 
 	function self.ColorPreviewPanel:Paint(w, h)
-<<<<<<< HEAD
-		surface.SetDrawColor(self:GetPreviewColors())
-=======
 		surface.SetDrawColor(self:GetParent():GetPreviewColors())
->>>>>>> origin/master
 		surface.DrawRect(1, 1, w - 2, h - 2)
 
 		surface.SetDrawColor(Color(0, 0, 0, 150))
@@ -323,17 +319,6 @@ function PANEL:Init()
 
 	self:CenterHorizontal()
 end
-
-	function PANEL:GetPreviewColors()
-		return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
-	end
-
-	function PANEL:UpdateColors()
-		local Shop = LocalPlayer():GetCarShop()
-		if Shop then
-			Shop.CarModel:SetColor(self:GetPreviewColors())
-		end
-	end
 
 
 function PANEL:Paint(w, h)
