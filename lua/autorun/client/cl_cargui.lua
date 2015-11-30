@@ -42,7 +42,7 @@ function ACar_OpenShop()
 	if(LocalPlayer().ACarGUI) then
 		LocalPlayer().ACarGUI:Remove()
 		LocalPlayer().ACarGUI = vgui.Create("ACar_Shop")
-		LocalPlayer():GetCarShop():SetColor(LocalPlayer().ACarGui:GetPreviewColors())
+		LocalPlayer():GetCarShop():SetColor(LocalPlayer().ACarGUI:GetPreviewColors())
 	else
 		LocalPlayer().ACarGUI = vgui.Create("ACar_Shop")
 	end
@@ -306,7 +306,7 @@ function PANEL:Init()
 	self.ColorPreviewPanel:SetSize(SWH(200, 100))
 
 	function self.ColorPreviewPanel:Paint(w, h)
-		surface.SetDrawColor(self.GetPreviewColors())
+		surface.SetDrawColor(self:GetParent():GetPreviewColors())
 		surface.DrawRect(1, 1, w - 2, h - 2)
 
 		surface.SetDrawColor(Color(0, 0, 0, 150))
