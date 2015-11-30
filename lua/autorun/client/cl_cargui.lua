@@ -106,14 +106,25 @@ function PANEL:OnNext()
 	net.SendToServer()
 end
 
-surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
-surface.CreateFont("VBigFont", {font = "Robot", size = 48})
-
 function PANEL:OnPrevious()
 	net.Start("ACar_SendCommand")
 	net.WriteString("OnPrevious")
 	net.SendToServer()
 end
+
+function PANEL:GetPreviewColors()
+	return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
+end
+
+function PANEL:UpdateColors()
+	local Shop = LocalPlayer():GetCarShop()
+	if Shop then
+		Shop.CarModel:SetColor(self.GetPreviewColors())
+	end
+end
+
+surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
+surface.CreateFont("VBigFont", {font = "Robot", size = 48})
 
 function PANEL:Init()
 	self:SetSize(SWH(1113.6,200))
@@ -267,17 +278,6 @@ function PANEL:Init()
 	self.BlueLabel = vgui.Create("DLabel", self.ColorPanel)
 	self.BlueLabel:SetText("Blue")
 	self.BlueLabel:SetPos(SWH(10, 65))
-
-	function self.GetPreviewColors()
-		return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
-	end
-
-	function self.UpdateColors()
-		local Shop = LocalPlayer():GetCarShop()
-		if Shop then
-			Shop.CarModel:SetColor(self.GetPreviewColors())
-		end
-	end
 
 	self.ColorRed = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorRed:SetMin(0)
