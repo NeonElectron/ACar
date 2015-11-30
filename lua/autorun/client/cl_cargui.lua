@@ -217,7 +217,7 @@ function PANEL:Init()
 	self.PrevButton:SetColor(Color(255, 255, 255, 200))
 	self.PrevButton:SetPos(SWH(425, 50))
 	self.PrevButton:SetSize(SWH(60, 40))
-	function self.PrevButton.DoClic()
+	function self.PrevButton.DoClick()
 		self:OnPrevious()
 	end
 
@@ -268,16 +268,6 @@ function PANEL:Init()
 	self.BlueLabel:SetText("Blue")
 	self.BlueLabel:SetPos(SWH(10, 65))
 
-	function self.GetPreviewColors()
-		return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
-	end
-
-	function self.UpdateColors()
-		local Shop = LocalPlayer():GetCarShop()
-		if Shop then
-			Shop.CarModel:SetColor(self.GetPreviewColors())
-		end
-	end
 
 	self.ColorRed = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorRed:SetMin(0)
@@ -305,7 +295,7 @@ function PANEL:Init()
 	self.ColorPreviewPanel:SetSize(SWH(200, 100))
 
 	function self.ColorPreviewPanel:Paint(w, h)
-		surface.SetDrawColor(self.GetPreviewColors())
+		surface.SetDrawColor(self:GetPreviewColors())
 		surface.DrawRect(1, 1, w - 2, h - 2)
 
 		surface.SetDrawColor(Color(0, 0, 0, 150))
@@ -314,6 +304,18 @@ function PANEL:Init()
 
 	self:CenterHorizontal()
 end
+
+	function PANEL:GetPreviewColors()
+		return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
+	end
+
+	function PANEL:UpdateColors()
+		local Shop = LocalPlayer():GetCarShop()
+		if Shop then
+			Shop.CarModel:SetColor(self:GetPreviewColors())
+		end
+	end
+
 
 function PANEL:Paint(w, h)
 	surface.SetDrawColor(0, 0, 0, 125)
