@@ -42,7 +42,7 @@ function ACar_OpenShop()
 	if(LocalPlayer().ACarGUI) then
 		LocalPlayer().ACarGUI:Remove()
 		LocalPlayer().ACarGUI = vgui.Create("ACar_Shop")
-		LocalPlayer():GetCarShop():SetColor(LocalPlayer().ACarGui:GetPreviewColors())
+		LocalPlayer():GetCarShop():SetColor(LocalPlayer().ACarGUI:GetPreviewColors())
 	else
 		LocalPlayer().ACarGUI = vgui.Create("ACar_Shop")
 	end
@@ -106,14 +106,25 @@ function PANEL:OnNext()
 	net.SendToServer()
 end
 
-surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
-surface.CreateFont("VBigFont", {font = "Robot", size = 48})
-
 function PANEL:OnPrevious()
 	net.Start("ACar_SendCommand")
 	net.WriteString("OnPrevious")
 	net.SendToServer()
 end
+
+function PANEL:GetPreviewColors()
+	return Color(self.ColorRed:GetValue(), self.ColorGreen:GetValue(), self.ColorBlue:GetValue(), 150)
+end
+
+function PANEL:UpdateColors()
+	local Shop = LocalPlayer():GetCarShop()
+	if Shop then
+		Shop.CarModel:SetColor(self.GetPreviewColors())
+	end
+end
+
+surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
+surface.CreateFont("VBigFont", {font = "Robot", size = 48})
 
 function PANEL:Init()
 	self:SetSize(SWH(1113.6,200))
@@ -166,6 +177,7 @@ function PANEL:Init()
 	function self.SellButton.DoClick()
 		self:OnSell()
 	end
+
 	function self.SellButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 255, 0, 150))
 		surface.DrawRect(1, 1, w - 2, h - 2)
@@ -268,7 +280,10 @@ function PANEL:Init()
 	self.BlueLabel:SetText("Blue")
 	self.BlueLabel:SetPos(SWH(10, 65))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	self.ColorRed = vgui.Create("DNumSlider", self.ColorPanel)
 	self.ColorRed:SetMin(0)
 	self.ColorRed:SetMax(255)
@@ -295,7 +310,11 @@ function PANEL:Init()
 	self.ColorPreviewPanel:SetSize(SWH(200, 100))
 
 	function self.ColorPreviewPanel:Paint(w, h)
+<<<<<<< HEAD
 		surface.SetDrawColor(self:GetPreviewColors())
+=======
+		surface.SetDrawColor(self:GetParent():GetPreviewColors())
+>>>>>>> origin/master
 		surface.DrawRect(1, 1, w - 2, h - 2)
 
 		surface.SetDrawColor(Color(0, 0, 0, 150))
