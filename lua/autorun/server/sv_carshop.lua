@@ -19,6 +19,22 @@ function PlyMeta:GetCarShop()
 	return self.CarShop
 end
 
+function PlyMeta:SetCarID(ID)
+	if ID > #ACar.Vehicles then
+		ID = 1
+	elseif ID < 1 then
+		ID = #ACar.Vehicles
+	end
+	self.CarShopID = ID
+end
+
+function PlyMeta:GetCarID()
+	if self.CarShopID then
+		return self.CarShopID
+	end
+	return 1
+end
+
 util.AddNetworkString("ACAR_Begin")
 util.AddNetworkString("ACar_Close")
 util.AddNetworkString("ACAR_End")
@@ -32,8 +48,16 @@ function ACar_ClientCommand(ln,ply)
 
 	local Command = net.ReadString()
 	if Command == "OnNext" then
+		ply:SetCarID(ply:GetCarID() + 1)
+
 		net.Start("ACar_SendVehicleInfo")
-		net.WriteTable(ACar.Vehicles[6])
+		net.WriteTable(ACar.Vehicles[ply:GetCarID()])
+		net.Send(ply)
+	elseif Command == "OnPrevious" then
+		ply:SetCarID(ply:GetCarID() - 1)
+
+		net.Start("ACar_SendVehicleInfo")
+		net.WriteTable(ACar.Vehicles[ply:GetCarID()])
 		net.Send(ply)
 	elseif Command == "OnClose" then
 		net.Start("ACar_Close")

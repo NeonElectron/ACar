@@ -33,6 +33,7 @@ function ENT:Use( activator,caller, useType, value )
 		net.WriteTable(ACar.Vehicles[1])
 
 		caller:SetCarShop(self)
+		caller:SetCarID(1)
 		net.Send(caller)
 	end
 end
