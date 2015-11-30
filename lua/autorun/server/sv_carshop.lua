@@ -20,17 +20,27 @@ function PlyMeta:GetCarShop()
 end
 
 util.AddNetworkString("ACAR_Begin")
+util.AddNetworkString("ACar_Close")
 util.AddNetworkString("ACAR_End")
 util.AddNetworkString("ACar_SendCommand")
 util.AddNetworkString("ACar_SendVehicleInfo")
 
 function ACar_ClientCommand(ln,ply)
-	print(ply,ply:GetCarShop())
-	if not ply:GetCarShop() then return end
-	if net.ReadString() == "OnNext" then
+	if not ply:GetCarShop() then
+		return nil
+	end
+
+	local Command = net.ReadString()
+	if Command == "OnNext" then
 		net.Start("ACar_SendVehicleInfo")
 		net.WriteTable(ACar.Vehicles[6])
 		net.Send(ply)
+	elseif Command == "OnClose" then
+		net.Start("ACar_Close")
+		net.Send(ply)
+
+		ply:SetInCarShop(nil)
+		ply:SetCarShop(nil)
 	end
 end
 net.Receive("ACar_SendCommand",ACar_ClientCommand)

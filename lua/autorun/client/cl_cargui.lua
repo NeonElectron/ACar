@@ -46,13 +46,17 @@ function ACar_OpenShop()
 		LocalPlayer().ACarGUI = vgui.Create("ACar_Shop")
 	end
 end
-net.Receive("ACAR_Begin",ACar_OpenShop)
+net.Receive("ACAR_Begin", ACar_OpenShop)
+
+function ACar_CloseShop()
+	LocalPlayer():SetCarShop(nil)
+	LocalPlayer().ACarGUI:Remove()
+end
+net.Receive("ACar_Close", ACar_CloseShop)
 
 function ACar_ReceiveInfo()
 	local tb = net.ReadTable()
 	LocalPlayer():GetCarShop():SetCars(tb.Model)
-	print("lol")
-
 end
 net.Receive("ACar_SendVehicleInfo",ACar_ReceiveInfo)
 
@@ -77,7 +81,10 @@ hook.Add( "ShouldDrawLocalPlayer", "MyShouldDrawLocalPlayer",
 
 local PANEL = {}
 
-function PANEL:OnCancel()
+function PANEL:OnClose()
+	net.Start("ACar_SendCommand")
+	net.WriteString("OnClose")
+	net.SendToServer()
 end
 
 function PANEL:OnBuy()
@@ -96,7 +103,6 @@ function PANEL:OnNext()
 	net.Start("ACar_SendCommand")
 	net.WriteString("OnNext")
 	net.SendToServer()
-	print("2")
 end
 
 surface.CreateFont("VMedFont", {font = "Roboto", size = 32})
@@ -114,14 +120,22 @@ function PANEL:Init()
 	self:SetVisible(true)
 	self:MakePopup()
 
-	self.CancelButton = vgui.Create("DButton", self)
-	self.CancelButton:SetText("Cancel")
-	self.CancelButton:SetFont("VMedFont")
-	self.CancelButton:SetColor(Color(100, 255, 100, 200))
-	self.CancelButton:SetPos(SWH(105, 139))
-	self.CancelButton:SetSize(SWH(170, 44))
-	function self.CancelButton.DoClick()
-		self:OnCancel()
+	self.CloseButton = vgui.Create("DButton", self)
+	self.CloseButton:SetText("Close")
+	self.CloseButton:SetFont("VMedFont")
+	self.CloseButton:SetColor(Color(255, 255, 255, 200))
+	self.CloseButton:SetPos(SWH(105, 139))
+	self.CloseButton:SetSize(SWH(170, 44))
+	function self.CloseButton.DoClick()
+		self:OnClose()
+	end
+
+	function self.CloseButton:Paint(w, h)
+		surface.SetDrawColor(Color(255, 0, 0, 150))
+		surface.DrawRect(1, 1, w - 2, h - 2)
+
+		surface.SetDrawColor(Color(48, 48, 48, 255))
+		surface.DrawOutlinedRect(0, 0, w, h)
 	end
 
 	self.BuyButton = vgui.Create("DButton", self)
