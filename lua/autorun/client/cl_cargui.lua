@@ -177,6 +177,7 @@ function PANEL:Init()
 	function self.SellButton.DoClick()
 		self:OnSell()
 	end
+
 	function self.SellButton:Paint(w, h)
 		surface.SetDrawColor(Color(0, 255, 0, 150))
 		surface.DrawRect(1, 1, w - 2, h - 2)
@@ -228,7 +229,7 @@ function PANEL:Init()
 	self.PrevButton:SetColor(Color(255, 255, 255, 200))
 	self.PrevButton:SetPos(SWH(425, 50))
 	self.PrevButton:SetSize(SWH(60, 40))
-	function self.PrevButton.DoClic()
+	function self.PrevButton.DoClick()
 		self:OnPrevious()
 	end
 
