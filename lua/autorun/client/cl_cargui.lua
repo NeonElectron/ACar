@@ -1,13 +1,5 @@
 local PlyMeta = FindMetaTable("Player")
 
-function PlyMeta:IsInCarShop()
-	return self.IICS
-end
-
-function PlyMeta:SetInCarShop(bool)
-	self.IICS = bool
-end
-
 function PlyMeta:SetCarShop(ent)
 	self.CarShop = ent
 end
@@ -34,7 +26,6 @@ local function SWH(width, height)
 end
 
 function ACar_OpenShop()
-	LocalPlayer():SetInCarShop(net.ReadBool())
 	LocalPlayer():SetCarShop(net.ReadEntity())
 
 	local tb = net.ReadTable()

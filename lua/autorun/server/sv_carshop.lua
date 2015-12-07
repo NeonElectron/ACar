@@ -3,14 +3,6 @@ ACar.Vehicles = {}
 
 local PlyMeta = FindMetaTable("Player")
 
-function PlyMeta:IsInCarShop()
-	return self.IICS
-end
-
-function PlyMeta:SetInCarShop(bool)
-	self.IICS = bool
-end
-
 function PlyMeta:SetCarShop(ent)
 	self.CarShop = ent
 end
@@ -63,7 +55,6 @@ function ACar_ClientCommand(ln,ply)
 		net.Start("ACar_Close")
 		net.Send(ply)
 
-		ply:SetInCarShop(nil)
 		ply:SetCarShop(nil)
 	end
 end

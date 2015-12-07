@@ -28,7 +28,6 @@ end
 function ENT:Use( activator,caller, useType, value )
 	if caller:IsPlayer() then
 		net.Start("ACAR_Begin")
-		net.WriteBool(true)
 		net.WriteEntity(self)
 		net.WriteTable(ACar.Vehicles[1])
 
